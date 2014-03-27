@@ -63,7 +63,8 @@ module.exports = function(grunt) {
         layout: 'byType',
         install: true,
         verbose: false,
-        copy: true,
+        copy: false,
+        cleanCache: false,
         bowerOptions: {}
       }),
       add = function(successMessage, fn) {
@@ -75,7 +76,8 @@ module.exports = function(grunt) {
         });
       },
       bowerDir = path.resolve(bower.config.directory),
-      targetDir = path.resolve(options.targetDir);
+      targetDir = path.resolve(options.targetDir),
+      cacheDir = path.resolve(bower.config.cache);
 
     log.logger = options.verbose ? grunt.log : grunt.verbose;
     options.layout = LayoutsManager.getLayout(options.layout, fail);
@@ -107,6 +109,12 @@ module.exports = function(grunt) {
       add('Cleaned bower dir ' + bowerDir.grey, function(callback) {
         clean(bowerDir, callback);
       });
+    }
+
+    if (options.cleanCache) {
+      add('Cleaned Cache'), function(callback) {
+        clean(cacheDir, callback)
+      }
     }
 
     async.series(tasks, done);

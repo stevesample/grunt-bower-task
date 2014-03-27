@@ -48,7 +48,8 @@ function verify(name, message, expected, test, bower) {
 exports.bower_assets = {
   setUp: function(done) {
     var bowerCommands = {
-      list: new EventEmitter()
+      list: new EventEmitter(),
+      cacheClean: new EventEmitter()
     };
     this.bowerCommands = bowerCommands;
 
@@ -56,11 +57,15 @@ exports.bower_assets = {
       commands: {
         list: function() {
           return bowerCommands.list;
+        },
+        cacheClean: function() {
+          return bowerCommands.cacheClean
         }
       },
       config: {
         json: 'component.json',
-        directory: 'components'
+        directory: 'components',
+        cache: '~.cache/bower'
       }
     };
 
